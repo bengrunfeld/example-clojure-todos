@@ -25,11 +25,11 @@
 
 
 
-(prn (monger.core/connect! { :host "ds033067.mongolab.com" :port 33067 } ) )
+(prn (monger.core/connect! { :host "db_host" :port 33067 } ) )
 
-(prn (monger.core/authenticate "heroku_app4267510" "heroku_app4267510" (.toCharArray "pesafn60hcjm4sms7c7mt6frr9")))
+(prn (monger.core/authenticate "db" "username" (.toCharArray "password")))
 
-(prn (monger.core/set-db! (monger.core/get-db "heroku_app4267510")))
+(prn (monger.core/set-db! (monger.core/get-db "db")))
 
 
 (def app
