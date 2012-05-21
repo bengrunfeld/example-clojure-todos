@@ -1,5 +1,5 @@
 (ns clj-todo.core
-  (:use compojure.core [ring.adapter.jetty :only [run-jetty]] )
+  (:use compojure.core [ring.adapter.jetty :only [run-jetty]] clojure.data.json )
     (:require [compojure.route :as route]
               [monger core util]
               [compojure.handler :as handler]
@@ -25,11 +25,17 @@
 
 
 
-(prn (monger.core/connect! { :host (get (System/getenv) "database_host" "unknown") :port 33067 } ) )
+(def configs (read-json (slurp "/var/cache/opdemand/inputs.json")))
 
-(prn (monger.core/authenticate "todos" (get (System/getenv) "database_username" "") (.toCharArray (get (System/getenv) "database_password" ""))))
+
+(prn "host" (str configs) )
+(prn "host" (:database/host configs) )
+(prn (monger.core/connect! { :host (:database/host configs) :port 27017 } ) )
+
+(prn (monger.core/authenticate "todos" (:database/username configs) (.toCharArray (:database/password configs))))
 
 (prn (monger.core/set-db! (monger.core/get-db "todos")))
+
 
 
 (def app
