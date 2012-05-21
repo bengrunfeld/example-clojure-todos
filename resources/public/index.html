@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Demo</title>
+    </head>
+<body>
+    <a href="http://jquery.com/">jQuery</a> <br />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+    
+    <h1> A Blogging Platform Demo </h1> <br />
+
+    <script>
+     window.onload = function(){ 
+            //$('.todos').text(data);
+            refresh();
+        };
+
+
+    
+        function refresh() {
+            $.getJSON("/todos/", function(data) {
+                $('.todos').text("");
+                data.forEach(function(item) {
+                    $('.todos').append("<tr><td><a href=\"javascript:del('"+ item["_id"] + "')\">Delete</a></td><td>" + item["name"] + "</td><td>" + item["task"] + "</td></tr>");
+                });
+            });
+        }
+
+        function del(id)    {
+            $.ajax({ url: "/todos/"+id, type: "DELETE" }).done(function() { refresh(); } );
+
+            console.log("ID " + id);
+        }
+        function submit()   {
+            var data = { "name" : $("#name").val(), "task" : $("#task").val() };
+            console.log("THIS " + data);
+            $.ajax({ url: "/todos/", type: "PUT", data : JSON.stringify( data ), contentType: "application/json"  }).done(function() { refresh(); } );
+            return false;
+        }
+    </script>
+
+    <table class="todos" border="1px" >
+    </table>
+
+
+    <form onSubmit="javascript:submit(this);"  method="post">
+        Name: <input type="text" id="name"/> <br />
+        Task: <input type="text" id="task"/> <br />
+        <a href="javascript:submit();">Submit</a>
+    </form>
+
+</body>
+
+</html>
