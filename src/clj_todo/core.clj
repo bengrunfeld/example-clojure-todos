@@ -25,11 +25,11 @@
 
 
 
-(prn (monger.core/connect! { :host "db_host" :port 33067 } ) )
+(prn (monger.core/connect! { :host (get (System/getenv) "database_host" "unknown") :port 33067 } ) )
 
-(prn (monger.core/authenticate "db" "username" (.toCharArray "password")))
+(prn (monger.core/authenticate "todos" (get (System/getenv) "database_username" "") (.toCharArray (get (System/getenv) "database_password" ""))))
 
-(prn (monger.core/set-db! (monger.core/get-db "db")))
+(prn (monger.core/set-db! (monger.core/get-db "todos")))
 
 
 (def app
