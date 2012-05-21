@@ -30,7 +30,7 @@
 
 (prn "host" (str configs) )
 (prn "host" (:database/host configs) )
-(prn (monger.core/connect! { :host (:database/host configs) :port 27017 } ) )
+(prn (monger.core/connect! { :host (:database/host configs) :port (Integer. (:database/port configs)) } ) )
 
 (prn (monger.core/authenticate "todos" (:database/username configs) (.toCharArray (:database/password configs))))
 
